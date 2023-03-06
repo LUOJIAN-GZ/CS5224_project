@@ -21,7 +21,8 @@ class Attraction {
         latitude = 1.28351,
         longtitude = 103.84435,
         rating = 4.2,
-        imagePath = 'http://www.singaporechinatown.com.sg/',
+        imagePath =
+            'https://www.visitsingapore.com/content/dam/desktop/global/see-do-singapore/culture-heritage/chinatown-heritage-centre-carousel01-rect.jpg',
         metaDescr =
             'At the Chinatown Heritage Centre, experience how Singaporeinatown Heritage Centre.',
         openingHours =

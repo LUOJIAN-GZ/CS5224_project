@@ -51,20 +51,8 @@ class _BrowsingPageState extends State<BrowsingPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              "Explore the trending tourism attractions around you.",
-              style: TextStyle(
-                  fontSize: 30,
-                  color: Color.fromARGB(255, 58, 63, 88),
-                  fontWeight: FontWeight.w600,
-                  shadows: <Shadow>[
-                    Shadow(
-                      offset: Offset(1.0, 1.0),
-                      blurRadius: 2.0,
-                      color: Color.fromARGB(150, 58, 63, 88),
-                    ),
-                  ]),
-            ),
+            const Text("Explore the trending tourism attractions around you.",
+                style: BrowsingPageStyles.heading),
             const SizedBox(height: 40),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -110,27 +98,13 @@ class _BrowsingPageState extends State<BrowsingPage> {
                                 LatLng(position.latitude, position.longitude)));
                         setState(() {});
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(200, 238, 106, 89),
-                        foregroundColor: const Color.fromARGB(200, 58, 63, 88),
-                        textStyle: const TextStyle(
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
+                      style: BrowsingPageStyles.buttonLocation,
                       child: const Text("Get current location"),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 249, 172, 103),
-                        foregroundColor: const Color.fromARGB(255, 58, 63, 88),
-                        textStyle: const TextStyle(
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
+                      style: BrowsingPageStyles.buttonSearch,
                       child: const Text("Search"),
                     ),
                   ],
@@ -183,11 +157,12 @@ class _BrowsingPageState extends State<BrowsingPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        const Text('Distance'),
+        Text('Distance', style: BrowsingPageStyles.filterLabel),
         const SizedBox(width: 20),
         DropdownButton(
+          icon: const Icon(Icons.arrow_drop_down_sharp),
           value: distanceDropdownValue,
-          icon: const Icon(Icons.keyboard_arrow_down),
+          style: BrowsingPageStyles.dropdown,
           items: distanceItems.map((String items) {
             return DropdownMenuItem(
               value: items,
@@ -197,15 +172,17 @@ class _BrowsingPageState extends State<BrowsingPage> {
           onChanged: (String? newValue) {
             setState(() {
               distanceDropdownValue = newValue!;
+              print(distanceDropdownValue);
             });
           },
         ),
         const SizedBox(width: 40),
-        const Text('Order by'),
+        Text('Order by', style: BrowsingPageStyles.filterLabel),
         const SizedBox(width: 20),
         DropdownButton(
+          icon: const Icon(Icons.arrow_drop_down_sharp),
           value: orderByDropdownValue,
-          icon: const Icon(Icons.keyboard_arrow_down),
+          style: BrowsingPageStyles.dropdown,
           items: orderByItems.map((String items) {
             return DropdownMenuItem(
               value: items,
@@ -215,6 +192,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
           onChanged: (String? newValue) {
             setState(() {
               orderByDropdownValue = newValue!;
+              print(orderByDropdownValue);
             });
           },
         ),
@@ -228,24 +206,138 @@ class _BrowsingPageState extends State<BrowsingPage> {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: attractionList.length,
       itemBuilder: (context, index) {
-        return _attractionCard(
-          attractionList[index],
-        );
+        return _attractionCard(attractionList[index], index);
       },
     );
   }
 
-  Widget _attractionCard(Attraction attraction) {
+  Widget _attractionCard(Attraction attraction, int index) {
     return Container(
+      margin: const EdgeInsets.symmetric(vertical: 20),
       height: 200,
-      child: Column(
+      decoration: BoxDecoration(
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.6),
+              offset: Offset(10, 10),
+              blurRadius: 10)
+        ],
+      ),
+      child: Row(
         children: [
-          Text(
-            attraction.name,
+          Container(
+            color: Color.fromARGB(255, 231, 142, 130),
+            width: 80,
+            alignment: Alignment.center,
+            child: Text(
+              (index + 1).toString(),
+              style: BrowsingPageStyles.index,
+            ),
           ),
-          Text(attraction.address)
+          Container(
+            width: 250,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              fit: BoxFit.fitHeight,
+              alignment: FractionalOffset.topCenter,
+              image: NetworkImage(attraction.imagePath),
+            )),
+          ),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(15.0),
+              color: Color.fromARGB(255, 248, 226, 217),
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  InkWell(
+                    child: Text(attraction.name,
+                        style: BrowsingPageStyles.cardTitle),
+                    onTap: () {
+                      print('tap');
+                    },
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text(attraction.metaDescr,
+                      style: BrowsingPageStyles.cardDesc),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
+}
+
+class BrowsingPageStyles {
+  static const heading = TextStyle(
+      fontSize: 30,
+      color: Color.fromARGB(255, 58, 63, 88),
+      fontWeight: FontWeight.w900,
+      shadows: <Shadow>[
+        Shadow(
+            offset: Offset(1.0, 1.0),
+            blurRadius: 2.0,
+            color: Color.fromARGB(150, 58, 63, 88)),
+      ]);
+
+  static var buttonLocation = ElevatedButton.styleFrom(
+    backgroundColor: Color.fromARGB(255, 231, 142, 130),
+    foregroundColor: Color.fromARGB(255, 58, 63, 88),
+    textStyle: const TextStyle(
+      fontSize: 17,
+      fontWeight: FontWeight.w900,
+      letterSpacing: 0.3,
+    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35.0)),
+    minimumSize: Size(250, 60),
+  );
+
+  static var buttonSearch = ElevatedButton.styleFrom(
+    backgroundColor: Color.fromARGB(255, 249, 172, 103),
+    foregroundColor: Color.fromARGB(255, 58, 63, 88),
+    textStyle: const TextStyle(
+      fontSize: 17,
+      fontWeight: FontWeight.w900,
+      letterSpacing: 0.3,
+    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35.0)),
+    minimumSize: Size(250, 60),
+  );
+
+  static const filterLabel = TextStyle(
+    fontSize: 15,
+    color: Color.fromARGB(255, 58, 63, 88),
+    fontWeight: FontWeight.w600,
+  );
+
+  static const dropdown = TextStyle(
+    fontSize: 15,
+    letterSpacing: 0.5,
+    color: Color.fromARGB(255, 58, 63, 88),
+    fontWeight: FontWeight.w600,
+  );
+
+  static const index = TextStyle(
+    fontSize: 30,
+    color: Color.fromARGB(255, 58, 63, 88),
+    fontWeight: FontWeight.w900,
+  );
+
+  static const cardTitle = TextStyle(
+    fontSize: 20,
+    color: Color.fromARGB(255, 58, 63, 88),
+    fontWeight: FontWeight.w800,
+    decoration: TextDecoration.underline,
+  );
+
+  static const cardDesc = TextStyle(
+    fontSize: 14,
+    height: 1.2,
+    color: Color.fromARGB(255, 58, 63, 88),
+    fontWeight: FontWeight.w600,
+  );
 }

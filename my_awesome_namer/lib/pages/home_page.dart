@@ -28,7 +28,6 @@ class _HomePageState extends State<HomePage> {
         preferredSize: const Size.fromHeight(80.0),
         child: Container(
           color: const Color.fromARGB(255, 58, 63, 88),
-          // margin: const EdgeInsets.all(20),
           padding: const EdgeInsets.all(20),
           child: nav_bar(),
         ),
@@ -40,32 +39,30 @@ class _HomePageState extends State<HomePage> {
   Widget nav_bar() {
     return Row(
       children: <Widget>[
-        const SizedBox(
-            child: Text(
-          "SGFavour",
-          style: TextStyle(
-            fontSize: 30,
-            color: Colors.white,
-            fontWeight: FontWeight.w800,
-          ),
-        )),
+        InkWell(
+            onTap: () {
+              setState(() {
+                buildBody = LandingPage();
+              });
+            },
+            child: const SizedBox(
+              child: Text("SGFavour", style: HomePageStyles.logo),
+            )),
         const Spacer(),
         NavBarItem(
-          title: "Tourism Attractions",
-          press: () {
-            setState(() {
-              buildBody = BrowsingPage();
-            });
-          },
-        ),
+            title: "Tourism Attractions",
+            press: () {
+              setState(() {
+                buildBody = BrowsingPage();
+              });
+            }),
         NavBarItem(
-          title: "Maps",
-          press: () {
-            setState(() {
-              buildBody = MapPage();
-            });
-          },
-        ),
+            title: "Maps",
+            press: () {
+              setState(() {
+                buildBody = MapPage();
+              });
+            }),
       ],
     );
   }
@@ -86,15 +83,24 @@ class NavBarItem extends StatelessWidget {
       onTap: press,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50),
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        child: Text(title, style: HomePageStyles.tab),
       ),
     );
   }
+}
+
+class HomePageStyles {
+  static const logo = TextStyle(
+    fontSize: 30,
+    letterSpacing: 3,
+    color: Colors.white,
+    fontWeight: FontWeight.w900,
+  );
+
+  static const tab = TextStyle(
+    fontSize: 18,
+    letterSpacing: 1,
+    color: Colors.white,
+    fontWeight: FontWeight.w600,
+  );
 }
