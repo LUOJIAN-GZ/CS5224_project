@@ -1,0 +1,6 @@
+
+my_awesome_namer/ios/Podfile
+my_awesome_namer/macos/Podfile
+*.xcconfig
+my_awesome_namer/ios/Flutter/Debug.xcconfig
+my_awesome_namer/ios/Flutter/Release.xcconfig
