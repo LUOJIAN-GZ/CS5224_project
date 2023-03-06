@@ -4,3 +4,6 @@ my_awesome_namer/macos/Podfile
 *.xcconfig
 my_awesome_namer/ios/Flutter/Debug.xcconfig
 my_awesome_namer/ios/Flutter/Release.xcconfig
+*.swift
+*.cc
+*.cmake
