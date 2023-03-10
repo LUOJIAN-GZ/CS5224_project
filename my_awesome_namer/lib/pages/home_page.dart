@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'browsing_page.dart';
 import 'landing_page.dart';
 import 'map_page.dart';
+import 'searchpage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    buildBody = LandingPage();
+    buildBody = SearchPage();
     super.initState();
   }
 
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> {
         InkWell(
             onTap: () {
               setState(() {
-                buildBody = LandingPage();
+                buildBody = SearchPage();
               });
             },
             child: const SizedBox(

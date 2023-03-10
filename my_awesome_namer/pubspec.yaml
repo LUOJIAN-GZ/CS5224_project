@@ -33,3 +33,4 @@ flutter:
   
   assets:
     - assets/locations.json
+    - assets/img/background1.png
