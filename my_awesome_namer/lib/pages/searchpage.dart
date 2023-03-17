@@ -1,8 +1,20 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'makehttprequest.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  @override
+  void initState() {
+    super.initState();
+    makeRequest();
+  }
+
   @override
   Widget build(BuildContext context) {
     var random_x = Random();
@@ -40,7 +52,7 @@ class SearchPage extends StatelessWidget {
         child: Column(
           children: [
             Stack(children: [
-              Image.asset('img/background1.png'),
+              Image.asset('assets/img/background1.png'),
               Positioned.fill(
                   child: ColoredBox(color: Color.fromARGB(90, 255, 255, 255))),
               Positioned.fill(
