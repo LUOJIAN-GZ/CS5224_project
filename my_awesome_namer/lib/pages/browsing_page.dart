@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sgfavour/services/api_client.dart';
 import '../models/attraction.dart';
 
 class BrowsingPage extends StatefulWidget {
@@ -11,24 +12,29 @@ class BrowsingPage extends StatefulWidget {
 }
 
 class _BrowsingPageState extends State<BrowsingPage> {
-  List<Attraction> attractionList = [
-    Attraction.blank(),
-    Attraction.blank(),
-    Attraction.blank(),
-    Attraction.blank(),
-    Attraction.blank(),
-  ];
+  List<Attraction>? attractionList;
+  var isLoaded = false;
+  // List<Attraction> attractionList = [
+  //   Attraction.blank(),
+  //   Attraction.blank(),
+  //   Attraction.blank(),
+  //   Attraction.blank(),
+  //   Attraction.blank(),
+  // ];
 
-  late String lat;
-  late String long;
+  late double lat;
+  late double long;
   String locationmessage = "Get current location";
   late GoogleMapController googleMapController;
   static const CameraPosition initialPosition =
       CameraPosition(target: LatLng(1.3521, 103.8198), zoom: 11.0);
   Set<Marker> markers = {};
 
-  var distanceItems = ['1km', '3km', '5km', '10km'];
-  String distanceDropdownValue = '3km';
+  // var distanceItems = ['1km', '3km', '5km', '10km'];
+  // String distanceDropdownValue = '3km';
+
+  var distanceItems = [1, 3, 5, 10];
+  int distanceDropdownValue = 3;
 
   var orderByItems = ['GoogleMaps Review', 'Twitter Trends'];
   String orderByDropdownValue = 'GoogleMaps Review';
@@ -40,6 +46,34 @@ class _BrowsingPageState extends State<BrowsingPage> {
     } else {
       return await Geolocator.getCurrentPosition();
     }
+  }
+
+  getData() async {
+    var orderByIndex = 1;
+    if (orderByDropdownValue == 'Twitter Trends') {
+      orderByIndex = 2;
+    }
+
+    if (isLoaded == false) {
+      lat = 1.3057701;
+      long = 103.7731644;
+      distanceDropdownValue = 10;
+    }
+
+    attractionList = await ApiService.getAttractionList(
+        lat, long, 1, distanceDropdownValue, orderByIndex);
+    if (attractionList != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getData();
   }
 
   @override
@@ -86,11 +120,12 @@ class _BrowsingPageState extends State<BrowsingPage> {
                     ElevatedButton(
                       onPressed: () async {
                         Position position = await _getCurrentLocation();
+                        lat = position.latitude;
+                        long = position.longitude;
+
                         googleMapController.animateCamera(
                             CameraUpdate.newCameraPosition(CameraPosition(
-                                target: LatLng(
-                                    position.latitude, position.longitude),
-                                zoom: 14.0)));
+                                target: LatLng(lat, long), zoom: 14.0)));
                         markers.clear();
                         markers.add(Marker(
                             markerId: const MarkerId('currentLocation'),
@@ -103,7 +138,11 @@ class _BrowsingPageState extends State<BrowsingPage> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        getData();
+                        print(attractionList?[0].name);
+                        setState(() {});
+                      },
                       style: BrowsingPageStyles.buttonSearch,
                       child: const Text("Search"),
                     ),
@@ -115,7 +154,13 @@ class _BrowsingPageState extends State<BrowsingPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       _filterRow(),
-                      _attractionList(), //Listview builder
+                      Visibility(
+                        visible: isLoaded,
+                        replacement: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        child: _attractionList(),
+                      ), //Listview builder
                     ],
                   ),
                 ),
@@ -163,13 +208,13 @@ class _BrowsingPageState extends State<BrowsingPage> {
           icon: const Icon(Icons.arrow_drop_down_sharp),
           value: distanceDropdownValue,
           style: BrowsingPageStyles.dropdown,
-          items: distanceItems.map((String items) {
+          items: distanceItems.map((int items) {
             return DropdownMenuItem(
               value: items,
-              child: Text(items),
+              child: Text('${items}km'),
             );
           }).toList(),
-          onChanged: (String? newValue) {
+          onChanged: (int? newValue) {
             setState(() {
               distanceDropdownValue = newValue!;
               print(distanceDropdownValue);
@@ -204,9 +249,9 @@ class _BrowsingPageState extends State<BrowsingPage> {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: attractionList.length,
+      itemCount: attractionList?.length,
       itemBuilder: (context, index) {
-        return _attractionCard(attractionList[index], index);
+        return _attractionCard(attractionList![index], index);
       },
     );
   }
@@ -254,7 +299,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
                     child: Text(attraction.name,
                         style: BrowsingPageStyles.cardTitle),
                     onTap: () {
-                      print('tap');
+                      print('tap attraction id ${attraction.id}');
                     },
                   ),
                   SizedBox(

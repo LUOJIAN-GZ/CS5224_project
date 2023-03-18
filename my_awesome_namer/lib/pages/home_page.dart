@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // buildBody = SearchPage();
+    buildBody = SearchPage();
     super.initState();
   }
 
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
           child: nav_bar(),
         ),
       ),
-      body: SearchPage(),
+      body: buildBody,
     );
   }
 

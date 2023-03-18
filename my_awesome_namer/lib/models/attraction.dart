@@ -1,55 +1,69 @@
+import 'dart:convert';
 import 'twitter_url.dart';
 
-class Attraction {
-  Attraction(this.name);
+List<Attraction> attractionFromJson(String str) =>
+    List<Attraction>.from(json.decode(str).map((x) => Attraction.fromJson(x)));
 
-  // Attraction.blank()
-  //     : name = '',
-  //       address = '',
-  //       latitude = 0,
-  //       longtitude = 0,
-  //       rating = 0,
-  //       imagePath = '',
-  //       metaDescr = '',
-  //       openingHours = '',
-  //       influenceScore = 0,
-  //       twitterURL = TwitterURL.blank();
+class Attraction {
+  Attraction(this.id);
 
   Attraction.blank()
-      : name = 'Chinatown Heritage Centre, Singapore',
-        address = '48 Pagoda Street',
-        latitude = 1.28351,
-        longtitude = 103.84435,
-        rating = 4.2,
-        imagePath =
-            'https://www.visitsingapore.com/content/dam/desktop/global/see-do-singapore/culture-heritage/chinatown-heritage-centre-carousel01-rect.jpg',
-        metaDescr =
-            'At the Chinatown Heritage Centre, experience how Singaporeinatown Heritage Centre.',
-        openingHours =
-            'Daily, 9am atown Heritage Centre, experience how Singaporeinatown Heritage Centre.',
-        influenceScore = 0,
-        twitterURL = TwitterURL.blank();
+      : id = 0,
+        name = '',
+        address = '',
+        latitude = 0,
+        longitude = 0,
+        rating = 0,
+        imagePath = '',
+        metaDescr = '',
+        openingHours = '',
+        // influenceScore = 0,
+        twitterURL = null;
+
+  // Attraction.blank()
+  //     : id = 1,
+  //       name = 'Chinatown Heritage Centre, Singapore',
+  //       address = '48 Pagoda Street',
+  //       latitude = 1.28351,
+  //       longitude = 103.84435,
+  //       rating = 4.2,
+  //       imagePath =
+  //           'https://www.visitsingapore.com/content/dam/desktop/global/see-do-singapore/culture-heritage/chinatown-heritage-centre-carousel01-rect.jpg',
+  //       metaDescr =
+  //           'At the Chinatown Heritage Centre, experience how Singaporeinatown Heritage Centre.',
+  //       openingHours =
+  //           'Daily, 9am atown Heritage Centre, experience how Singaporeinatown Heritage Centre.',
+  //       // influenceScore = 0,
+  //       twitterURL = [];
 
   Attraction.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        address = json['address'],
-        latitude = json['latitude'],
-        longtitude = json['longtitude'],
-        rating = json['rating'],
-        imagePath = json['imagePath'],
-        metaDescr = json['metaDescr'],
-        openingHours = json['openingHours'],
-        influenceScore = json['influenceScore'],
-        twitterURL = TwitterURL.fromJson(json['twitterURL']);
+      : id = json['id'],
+        name = json['name'],
+        imagePath = json['image_path'],
+        metaDescr = json['meta_descr'],
+        address = json.containsKey("address") ? json['address'] : null,
+        // json['address'] in json.keys,
+        latitude = json.containsKey("latitude") ? json['latitude'] : null,
+        // json['latitude'],
+        longitude = json.containsKey("longitude") ? json['longitude'] : null,
+        // json['longitude'],
+        rating = json.containsKey("rating") ? json['rating'] : null,
+        openingHours =
+            json.containsKey("openingHours") ? json['openingHours'] : null,
+        // influenceScore = json['influenceScore'],
+        twitterURL = json.containsKey("hot_twitter_text_url")
+            ? twitterFromJson(json['hot_twitter_text_url'])
+            : null;
 
-  String name;
-  late String address;
-  late double latitude;
-  late double longtitude;
-  late double rating; //Google ratings
+  int id;
+  late String name;
   late String imagePath;
   late String metaDescr;
-  late String openingHours;
-  late double influenceScore;
-  late TwitterURL twitterURL;
+  late String? address;
+  late double? latitude;
+  late double? longitude;
+  late double? rating; //Google ratings
+  late String? openingHours;
+  // late double influenceScore;
+  late List<TwitterURL>? twitterURL;
 }
