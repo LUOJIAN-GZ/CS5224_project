@@ -1,8 +1,7 @@
-import 'dart:convert';
 import 'twitter_url.dart';
 
-List<Attraction> attractionFromJson(String str) =>
-    List<Attraction>.from(json.decode(str).map((x) => Attraction.fromJson(x)));
+List<Attraction> attractionFromJson(List<dynamic> str) =>
+    List<Attraction>.from(str.map((x) => Attraction.fromJson(x)));
 
 class Attraction {
   Attraction(this.id);
@@ -17,7 +16,7 @@ class Attraction {
         imagePath = '',
         metaDescr = '',
         openingHours = '',
-        // influenceScore = 0,
+        influenceScore = 0,
         twitterURL = null;
 
   // Attraction.blank()
@@ -49,21 +48,23 @@ class Attraction {
         // json['longitude'],
         rating = json.containsKey("rating") ? json['rating'] : null,
         openingHours =
-            json.containsKey("openingHours") ? json['openingHours'] : null,
-        // influenceScore = json['influenceScore'],
-        twitterURL = json.containsKey("hot_twitter_text_url")
-            ? twitterFromJson(json['hot_twitter_text_url'])
+            json.containsKey("opening_hours") ? json['opening_hours'] : null,
+        influenceScore = json.containsKey("influence_score")
+            ? json['influence_score']
+            : null,
+        twitterURL = json.containsKey("twitter_posts")
+            ? twitterFromJson(json['twitter_posts'])
             : null;
 
   int id;
   late String name;
   late String imagePath;
   late String metaDescr;
-  late String? address;
-  late double? latitude;
-  late double? longitude;
-  late double? rating; //Google ratings
-  late String? openingHours;
-  // late double influenceScore;
+  late String address;
+  late double latitude;
+  late double longitude;
+  late double rating; //Google ratings
+  late String openingHours;
+  late double influenceScore;
   late List<TwitterURL>? twitterURL;
 }

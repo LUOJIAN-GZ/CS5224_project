@@ -1,13 +1,10 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'browsing_page.dart';
-import 'landing_page.dart';
 import 'map_page.dart';
 import 'searchpage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -30,14 +27,14 @@ class _HomePageState extends State<HomePage> {
         child: Container(
           color: const Color.fromARGB(255, 58, 63, 88),
           padding: const EdgeInsets.all(20),
-          child: nav_bar(),
+          child: navBar(),
         ),
       ),
       body: buildBody,
     );
   }
 
-  Widget nav_bar() {
+  Widget navBar() {
     return Row(
       children: <Widget>[
         InkWell(

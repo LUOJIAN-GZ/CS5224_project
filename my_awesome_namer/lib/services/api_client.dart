@@ -7,7 +7,7 @@ class ApiService {
   static String cookie = '';
   static String token = '';
   static const String baseUrl =
-      'https://4q3yf6foqc.execute-api.us-east-1.amazonaws.com/cs5224_api/attractions';
+      'https://iu9iodz8n1.execute-api.ap-southeast-1.amazonaws.com/cs5224_apis/attractions';
 
   static Future<List<Attraction>> getAttractionList(double latitude,
       double longitude, int flagLocation, int distance, int orderBy) async {
@@ -35,6 +35,21 @@ class ApiService {
       print(json);
       print(attractionFromJson(json));
       return attractionFromJson(json);
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<Attraction> getAttractionById(int id) async {
+    var client = http.Client();
+    var uri = Uri.parse('$baseUrl' '/id?id=$id');
+    print(uri);
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      var json = jsonDecode(response.body)['body'];
+      print(json);
+      print(Attraction.fromJson(json).id);
+      return Attraction.fromJson(json);
     } else {
       throw Exception();
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sgfavour/pages/detail_page.dart';
 import 'package:sgfavour/services/api_client.dart';
 import '../models/attraction.dart';
 
@@ -72,7 +73,6 @@ class _BrowsingPageState extends State<BrowsingPage> {
   @override
   void initState() {
     super.initState();
-
     getData();
   }
 
@@ -298,9 +298,20 @@ class _BrowsingPageState extends State<BrowsingPage> {
                   InkWell(
                     child: Text(attraction.name,
                         style: BrowsingPageStyles.cardTitle),
-                    onTap: () {
-                      print('tap attraction id ${attraction.id}');
-                    },
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailPage(attraction.id),
+                      ),
+                    ),
+                    // onTap: () {
+                    //   print('tap attraction id ${attraction.id}');
+                    //   print(buildBody);
+                    //   setState(() {
+                    //     buildBody = DetailPage(attraction.id);
+                    //   });
+                    //   print(buildBody);
+                    // },
                   ),
                   SizedBox(
                     height: 30,
