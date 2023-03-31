@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'makehttprequest.dart';
+import '../models/attraction.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -9,10 +10,22 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  var issearch = true;
+  var testdata = "";
+  final TextEditingController searchController = TextEditingController();
+
+  List<Attraction>? searchresult;
   @override
   void initState() {
     super.initState();
-    // makeRequest();
+    // ignore: undefined_prefixed_name
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -71,6 +84,7 @@ class _SearchPageState extends State<SearchPage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(200.0, 120, 200.0, 0),
               child: TextField(
+                controller: searchController,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -81,47 +95,61 @@ class _SearchPageState extends State<SearchPage> {
                   prefixIcon: Icon(Icons.search_rounded),
                   suffixIcon: IconButton(
                     icon: Icon(Icons.send),
-                    onPressed: () {},
+                    onPressed: () async {
+                      print(searchController.text);
+                      searchresult = await makeRequest(searchController.text);
+                      print(searchresult?.length);
+                      final searchResultLocal = searchresult;
+                      if (searchResultLocal != null) {
+                        for (final result in searchResultLocal) {
+                          print(result.name);
+                        }
+                      }
+                      setState(() {
+                        issearch = false;
+                      });
+                    },
                   ),
                 ),
               ),
             ),
-            SizedBox(
-              width: 800.0,
-              height: 200.0,
-              child: Stack(children: [
-                Positioned(
-                  left: 50,
-                  bottom: 150,
-                  child: Text('#HaiDiLao'),
-                ),
-                Positioned(
-                  left: 200,
-                  bottom: 50,
-                  child: Text('#HaiDiLao'),
-                ),
-                Positioned(
-                  left: 550,
-                  bottom: 50,
-                  child: Text('#HaiDiLao'),
-                ),
-                Positioned(
-                  left: 300,
-                  bottom: 150,
-                  child: Text('#HaiDiLao'),
-                ),
-                Positioned(
-                  left: 700,
-                  bottom: 50,
-                  child: Text('#HaiDiLao'),
-                ),
-                Positioned(
-                  left: 600,
-                  bottom: 150,
-                  child: Text('#HaiDiLao'),
-                ),
-              ]),
-            ),
+            if (issearch)
+              SizedBox(
+                width: 800.0,
+                height: 200.0,
+                child: Stack(children: [
+                  Positioned(
+                    left: 50,
+                    bottom: 150,
+                    child: Text('#HaiDiLao'),
+                  ),
+                  Positioned(
+                    left: 200,
+                    bottom: 50,
+                    child: Text('#HaiDiLao'),
+                  ),
+                  Positioned(
+                    left: 550,
+                    bottom: 50,
+                    child: Text('#HaiDiLao'),
+                  ),
+                  Positioned(
+                    left: 300,
+                    bottom: 150,
+                    child: Text('#HaiDiLao'),
+                  ),
+                  Positioned(
+                    left: 700,
+                    bottom: 50,
+                    child: Text('#HaiDiLao'),
+                  ),
+                  Positioned(
+                    left: 600,
+                    bottom: 150,
+                    child: Text('#HaiDiLao'),
+                  ),
+                ]),
+              ),
           ],
         ),
       ),

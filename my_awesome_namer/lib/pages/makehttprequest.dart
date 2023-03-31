@@ -1,19 +1,25 @@
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../models/attraction.dart';
 
-void makeRequest() async {
+makeRequest(String searchWord) async {
   // var url = Uri.parse('https://www.google.com/');
   // var response = await http.get(url);
   var response;
+  List<Attraction>? extract_data;
   try {
     response = await http.get(Uri.parse(
-        'https://4q3yf6foqc.execute-api.us-east-1.amazonaws.com/cs5224_api/attractions?latitude=1.2838785&longitude=103.85899&flag_location=1&distance=10&orderby=1'));
+        'https://iu9iodz8n1.execute-api.ap-southeast-1.amazonaws.com/cs5224_apis/attractions/search?keyword=$searchWord'));
   } catch (e) {
     print(e);
   }
 
   if (response.statusCode == 200) {
+    var json = jsonDecode(response.body)['body'];
     // Request was successful, parse the response
-    print(response.body);
+    // print(attractionFromJson(json));
+    extract_data = attractionFromJson(json);
+    return extract_data;
   } else {
     // Request failed, handle the error
     print('Request failed with status: ${response.statusCode}.');

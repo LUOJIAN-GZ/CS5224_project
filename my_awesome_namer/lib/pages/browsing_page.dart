@@ -140,7 +140,6 @@ class _BrowsingPageState extends State<BrowsingPage> {
                     ElevatedButton(
                       onPressed: () {
                         getData();
-                        print(attractionList?[0].name);
                         setState(() {});
                       },
                       style: BrowsingPageStyles.buttonSearch,

@@ -3,6 +3,9 @@ import 'package:sgfavour/services/api_client.dart';
 import '../models/attraction.dart';
 import '../models/twitter_url.dart';
 import 'browsing_page.dart';
+import 'dart:ui' as ui;
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
 
 class DetailPage extends StatefulWidget {
   const DetailPage(this.id);
@@ -16,6 +19,30 @@ class _DetailPageState extends State<DetailPage> {
   Attraction? attraction;
   var isLoaded = false;
 
+  var urls = [
+    // "https://twitter.com/JackPosobiec/status/1641836207993765890",
+    // "https://twitter.com/Leonidas_SBC/status/1617604977383333888",
+    "https://twitter.com/aymanitani/status/1641832727262445568",
+    "https://twitter.com/cupTWOst/status/1641579532342919169"
+  ];
+  String returnHTMLcode(List urls) {
+    String resultHtml = """<!DOCTYPE html>
+<html lang="en">
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></body>
+<body>""";
+
+    for (final url in urls) {
+      resultHtml += """
+      <blockquote class="twitter-tweet">
+      <a href="$url">
+      </a>
+      </blockquote>""";
+    }
+    resultHtml += """</body>
+</html>""";
+    return resultHtml;
+  }
+
   @override
   void initState() {
     getData();
@@ -24,6 +51,19 @@ class _DetailPageState extends State<DetailPage> {
 
   getData() async {
     attraction = await ApiService.getAttractionById(widget.id);
+    // ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory('twitter-view', (viewId) {
+      print(viewId);
+      final iFrameElement = IFrameElement()
+        ..width = '500'
+        ..height = '1300'
+        // ..src = "assets/asd.html"
+        ..srcdoc = returnHTMLcode(urls)
+        ..style.border = 'none';
+      iFrameElement
+          .appendHtml("""text""", treeSanitizer: NodeTreeSanitizer.trusted);
+      return iFrameElement;
+    });
     if (attraction != null) {
       setState(() {
         isLoaded = true;
@@ -52,6 +92,7 @@ class _DetailPageState extends State<DetailPage> {
               child: CircularProgressIndicator(),
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   flex: 4,
@@ -174,7 +215,11 @@ class _DetailPageState extends State<DetailPage> {
             "Posts on Twitter: ",
             style: DetailPageStyles.subtitle,
           ),
-          attraction.twitterURL != null ? _twitterPostList() : Container(),
+          // attraction.twitterURL != null ? _twitterPostList() : Container(),
+          SizedBox(
+              width: 500,
+              height: 1400,
+              child: HtmlElementView(viewType: 'twitter-view')),
         ],
       ),
     );
