@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sgfavour/services/api_client.dart';
 import '../models/attraction.dart';
 import '../models/twitter_url.dart';
-import 'browsing_page.dart';
+import '../widget/attraction_list.dart';
 import 'dart:ui' as ui;
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html';

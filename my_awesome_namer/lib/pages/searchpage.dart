@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'makehttprequest.dart';
 import '../models/attraction.dart';
+import '../widget/attraction_list.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -84,6 +85,7 @@ class _SearchPageState extends State<SearchPage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(200.0, 120, 200.0, 0),
               child: TextField(
+                onSubmitted: (_) => onSubmitdata(),
                 controller: searchController,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
@@ -95,64 +97,93 @@ class _SearchPageState extends State<SearchPage> {
                   prefixIcon: Icon(Icons.search_rounded),
                   suffixIcon: IconButton(
                     icon: Icon(Icons.send),
-                    onPressed: () async {
-                      print(searchController.text);
-                      searchresult = await makeRequest(searchController.text);
-                      print(searchresult?.length);
-                      final searchResultLocal = searchresult;
-                      if (searchResultLocal != null) {
-                        for (final result in searchResultLocal) {
-                          print(result.name);
-                        }
-                      }
-                      setState(() {
-                        issearch = false;
-                      });
-                    },
+                    onPressed: onSubmitdata,
                   ),
                 ),
               ),
             ),
-            if (issearch)
-              SizedBox(
-                width: 800.0,
-                height: 200.0,
-                child: Stack(children: [
-                  Positioned(
-                    left: 50,
-                    bottom: 150,
-                    child: Text('#HaiDiLao'),
-                  ),
-                  Positioned(
-                    left: 200,
-                    bottom: 50,
-                    child: Text('#HaiDiLao'),
-                  ),
-                  Positioned(
-                    left: 550,
-                    bottom: 50,
-                    child: Text('#HaiDiLao'),
-                  ),
-                  Positioned(
-                    left: 300,
-                    bottom: 150,
-                    child: Text('#HaiDiLao'),
-                  ),
-                  Positioned(
-                    left: 700,
-                    bottom: 50,
-                    child: Text('#HaiDiLao'),
-                  ),
-                  Positioned(
-                    left: 600,
-                    bottom: 150,
-                    child: Text('#HaiDiLao'),
-                  ),
-                ]),
-              ),
+            if (issearch) buildHotspotWidget(),
+            if (!issearch)
+              Container(
+                  width: 1000,
+                  child: AttractionList(attractionList: searchresult)),
           ],
         ),
       ),
     );
+  }
+
+  Widget buildHotspotWidget() {
+    return SizedBox(
+      width: 800.0,
+      height: 200.0,
+      child: Stack(children: [
+        Positioned(
+          left: 50,
+          bottom: 150,
+          child: Text('#HaiDiLao'),
+        ),
+        Positioned(
+          left: 200,
+          bottom: 50,
+          child: Text('#HaiDiLao'),
+        ),
+        Positioned(
+          left: 550,
+          bottom: 50,
+          child: Text('#HaiDiLao'),
+        ),
+        Positioned(
+          left: 300,
+          bottom: 150,
+          child: Text('#HaiDiLao'),
+        ),
+        Positioned(
+          left: 700,
+          bottom: 50,
+          child: Text('#HaiDiLao'),
+        ),
+        Positioned(
+          left: 600,
+          bottom: 150,
+          child: Text('#HaiDiLao'),
+        ),
+      ]),
+    );
+  }
+
+  Widget buildSearchResult() {
+    return Container(
+      color: Colors.blueGrey,
+      width: 500,
+      height: 250,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                Text("Title", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("Content"),
+              ],
+            ),
+          ),
+          Image.network(
+            "https://ichef.bbci.co.uk/news/976/cpsprodpb/15951/production/_117310488_16.jpg.webp",
+            height: 200,
+            width: 200,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void onSubmitdata() async {
+    print(searchController.text);
+    searchresult = await makeRequest(searchController.text);
+    setState(() {
+      issearch = false;
+    });
   }
 }
