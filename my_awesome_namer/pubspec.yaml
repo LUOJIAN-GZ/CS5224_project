@@ -35,3 +35,5 @@ flutter:
     - assets/locations.json
     - assets/img/background1.png
     - assets/asd.html
+    - assets/img/google.png
+    - assets/img/twitter.png

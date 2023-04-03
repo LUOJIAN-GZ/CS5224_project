@@ -32,8 +32,25 @@ class ApiService {
     var response = await client.get(uri);
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body)['body'];
-      print(json);
-      print(attractionFromJson(json));
+      // print(json);
+      // print(attractionFromJson(json));
+      return attractionFromJson(json);
+    } else {
+      throw Exception();
+    }
+  }
+
+  static Future<List<Attraction>> getAttractionListNoLocation(
+      int flagLocation, int orderBy) async {
+    var client = http.Client();
+    var uri = Uri.parse('$baseUrl'
+        '?flag_location=$flagLocation&orderby=$orderBy');
+    print(uri);
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      var json = jsonDecode(response.body)['body'];
+      // print(json);
+      // print(attractionFromJson(json));
       return attractionFromJson(json);
     } else {
       throw Exception();
@@ -47,8 +64,8 @@ class ApiService {
     var response = await client.get(uri);
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body)['body'];
-      print(json);
-      print(Attraction.fromJson(json).id);
+      // print(json);
+      // print(Attraction.fromJson(json).id);
       return Attraction.fromJson(json);
     } else {
       throw Exception();

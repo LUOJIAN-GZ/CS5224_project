@@ -19,6 +19,7 @@ class AttractionList extends StatelessWidget {
 
   Widget _attractionCard(
       BuildContext context, Attraction attraction, int index) {
+    print(attraction.imagePath);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 20),
       height: 200,
@@ -80,6 +81,31 @@ class AttractionList extends StatelessWidget {
                   ),
                   Text(attraction.metaDescr,
                       style: BrowsingPageStyles.cardDesc),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    children: [
+                      Image.asset(
+                        'assets/img/google.png',
+                        height: 20,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        "Rating:",
+                        style: BrowsingPageStyles.cardDesc,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        attraction.rating.toString(),
+                        style: BrowsingPageStyles.cardDesc,
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

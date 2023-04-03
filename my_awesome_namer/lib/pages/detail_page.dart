@@ -18,13 +18,17 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   Attraction? attraction;
   var isLoaded = false;
+  var hasTwitter = false;
 
-  var urls = [
-    // "https://twitter.com/JackPosobiec/status/1641836207993765890",
-    // "https://twitter.com/Leonidas_SBC/status/1617604977383333888",
-    "https://twitter.com/aymanitani/status/1641832727262445568",
-    "https://twitter.com/cupTWOst/status/1641579532342919169"
-  ];
+  // var urls = [
+  //   // "https://twitter.com/JackPosobiec/status/1641836207993765890",
+  //   // "https://twitter.com/Leonidas_SBC/status/1617604977383333888",
+  //   "https://twitter.com/aymanitani/status/1641832727262445568",
+  //   "https://twitter.com/cupTWOst/status/1641579532342919169"
+  // ];
+
+  var urls = [];
+
   String returnHTMLcode(List urls) {
     String resultHtml = """<!DOCTYPE html>
 <html lang="en">
@@ -51,19 +55,51 @@ class _DetailPageState extends State<DetailPage> {
 
   getData() async {
     attraction = await ApiService.getAttractionById(widget.id);
+    // print(hasTwitter);
+    if (attraction!.twitterURL!.isNotEmpty) {
+      for (TwitterURL post in attraction!.twitterURL!) {
+        urls.add(post.url);
+      }
+      setState(() {
+        hasTwitter = true;
+      });
+      // print(hasTwitter);
+    } else {
+      print("no twitter post");
+    }
+
+    // // ignore: undefined_prefixed_name
+    // ui.platformViewRegistry.registerViewFactory('twitter-view', (viewId) {
+    //   print(viewId);
+    //   print(urls);
+    //   final iFrameElement = IFrameElement()
+    //     ..width = '500'
+    //     ..height = '1300'
+    //     // ..src = "assets/asd.html"
+    //     ..srcdoc = returnHTMLcode(urls)
+    //     ..style.border = 'none';
+    //   iFrameElement
+    //       .appendHtml("""text""", treeSanitizer: NodeTreeSanitizer.trusted);
+    //   return iFrameElement;
+    // });
+
     // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory('twitter-view', (viewId) {
-      print(viewId);
+    ui.platformViewRegistry.registerViewFactory(returnHTMLcode(urls), (viewId) {
+      // print(viewId);
+      // print(urls);
       final iFrameElement = IFrameElement()
         ..width = '500'
         ..height = '1300'
         // ..src = "assets/asd.html"
         ..srcdoc = returnHTMLcode(urls)
-        ..style.border = 'none';
+        ..style.border = 'none'
+        ..style.width = '100%'
+        ..style.height = '100%';
       iFrameElement
           .appendHtml("""text""", treeSanitizer: NodeTreeSanitizer.trusted);
       return iFrameElement;
     });
+
     if (attraction != null) {
       setState(() {
         isLoaded = true;
@@ -118,12 +154,12 @@ class _DetailPageState extends State<DetailPage> {
                                   : ""),
                             )),
                       ),
-                      const SizedBox(height: 60),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: BrowsingPageStyles.buttonLocation,
-                        child: const Text("View On Map"),
-                      ),
+                      // const SizedBox(height: 60),
+                      // ElevatedButton(
+                      //   onPressed: () {},
+                      //   style: BrowsingPageStyles.buttonLocation,
+                      //   child: const Text("View On Map"),
+                      // ),
                     ],
                   ),
                 ),
@@ -201,25 +237,89 @@ class _DetailPageState extends State<DetailPage> {
             attraction.openingHours,
             style: DetailPageStyles.content,
           ),
-          SizedBox(height: 15),
-          Text(
-            "Google Rating:",
-            style: DetailPageStyles.subtitle,
-          ),
-          Text(
-            attraction.rating.toString(),
-            style: DetailPageStyles.content,
+          SizedBox(height: 25),
+          Row(
+            children: [
+              Image.asset(
+                'assets/img/google.png',
+                height: 35,
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Text(
+                "Rating:",
+                style: DetailPageStyles.subtitle,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                attraction.rating.toString(),
+                style: DetailPageStyles.content,
+              ),
+            ],
           ),
           const SizedBox(height: 40),
-          Text(
-            "Posts on Twitter: ",
-            style: DetailPageStyles.subtitle,
+          _twitterPost(),
+          // Row(
+          //   children: [
+          //     Text(
+          //       "Posts on",
+          //       style: DetailPageStyles.subtitle,
+          //     ),
+          //     SizedBox(
+          //       width: 5,
+          //     ),
+          //     Image.asset(
+          //       'assets/img/twitter.png',
+          //       height: 40,
+          //     ),
+          //   ],
+          // ),
+          // // attraction.twitterURL != null ? _twitterPostList() : Container(),
+          // SizedBox(
+          //     width: 500,
+          //     height: 1400,
+          //     child: HtmlElementView(viewType: 'twitter-view')),
+        ],
+      ),
+    );
+  }
+
+  Widget _twitterPost() {
+    return Visibility(
+      visible: hasTwitter,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                "Posts on",
+                style: DetailPageStyles.subtitle,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Image.asset(
+                'assets/img/twitter.png',
+                height: 40,
+              ),
+            ],
           ),
           // attraction.twitterURL != null ? _twitterPostList() : Container(),
-          SizedBox(
+          Visibility(
+            visible: hasTwitter,
+            replacement: Center(
+              child: CircularProgressIndicator(),
+            ),
+            child: SizedBox(
               width: 500,
               height: 1400,
-              child: HtmlElementView(viewType: 'twitter-view')),
+              // child: HtmlElementView(viewType: 'twitter-view'),
+              child: HtmlElementView(viewType: returnHTMLcode(urls)),
+            ),
+          ),
         ],
       ),
     );

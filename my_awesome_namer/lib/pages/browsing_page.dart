@@ -24,8 +24,9 @@ class _BrowsingPageState extends State<BrowsingPage> {
   //   Attraction.blank(),
   // ];
 
-  late double lat;
-  late double long;
+  double? lat;
+  double? long;
+  bool serviceEnabled = false;
   String locationmessage = "Get current location";
   late GoogleMapController googleMapController;
   static const CameraPosition initialPosition =
@@ -42,7 +43,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
   String orderByDropdownValue = 'GoogleMaps Review';
 
   Future<Position> _getCurrentLocation() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return Future.error("Location service is disabled.");
     } else {
@@ -53,17 +54,25 @@ class _BrowsingPageState extends State<BrowsingPage> {
   getData() async {
     var orderByIndex = 1;
     if (orderByDropdownValue == 'Twitter Trends') {
-      orderByIndex = 2;
+      orderByIndex = 0;
+    }
+    // print(serviceEnabled);
+    // print("lat: $lat");
+    if (lat == null && long == null) {
+      attractionList =
+          await ApiService.getAttractionListNoLocation(0, orderByIndex);
+    } else {
+      attractionList = await ApiService.getAttractionList(
+          lat!, long!, 1, distanceDropdownValue, orderByIndex);
     }
 
-    if (isLoaded == false) {
-      lat = 1.3057701;
-      long = 103.7731644;
-      distanceDropdownValue = 10;
-    }
+    // if (isLoaded == false) {
+    //   lat = 1.3057701;
+    //   long = 103.7731644;
+    //   distanceDropdownValue = 10;
+    // }
 
-    attractionList = await ApiService.getAttractionList(
-        lat, long, 1, distanceDropdownValue, orderByIndex);
+    print(attractionList);
     if (attractionList != null) {
       setState(() {
         isLoaded = true;
@@ -126,7 +135,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
 
                         googleMapController.animateCamera(
                             CameraUpdate.newCameraPosition(CameraPosition(
-                                target: LatLng(lat, long), zoom: 14.0)));
+                                target: LatLng(lat!, long!), zoom: 14.0)));
                         markers.clear();
                         markers.add(Marker(
                             markerId: const MarkerId('currentLocation'),
@@ -217,7 +226,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
           onChanged: (int? newValue) {
             setState(() {
               distanceDropdownValue = newValue!;
-              print(distanceDropdownValue);
+              // print(distanceDropdownValue);
             });
           },
         ),
@@ -237,7 +246,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
           onChanged: (String? newValue) {
             setState(() {
               orderByDropdownValue = newValue!;
-              print(orderByDropdownValue);
+              // print(orderByDropdownValue);
             });
           },
         ),
