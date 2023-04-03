@@ -19,7 +19,7 @@ class AttractionList extends StatelessWidget {
 
   Widget _attractionCard(
       BuildContext context, Attraction attraction, int index) {
-    print(attraction.imagePath);
+    // print(attraction.imagePath);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 20),
       height: 200,
@@ -51,6 +51,7 @@ class AttractionList extends StatelessWidget {
               image: NetworkImage(attraction.imagePath),
             )),
           ),
+          // Image.network("https://${attraction.imagePath}"),
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(15.0),

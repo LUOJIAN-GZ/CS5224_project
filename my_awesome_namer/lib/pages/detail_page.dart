@@ -204,6 +204,8 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Widget detailInfo(Attraction attraction) {
+    final addressLocal = attraction.address;
+    final openingHoursLocal = attraction.openingHours;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -224,19 +226,21 @@ class _DetailPageState extends State<DetailPage> {
             "Address:",
             style: DetailPageStyles.subtitle,
           ),
-          Text(
-            attraction.address,
-            style: DetailPageStyles.content,
-          ),
+          if (addressLocal != null)
+            Text(
+              addressLocal,
+              style: DetailPageStyles.content,
+            ),
           SizedBox(height: 15),
           Text(
             "Operating Hours:",
             style: DetailPageStyles.subtitle,
           ),
-          Text(
-            attraction.openingHours,
-            style: DetailPageStyles.content,
-          ),
+          if (openingHoursLocal != null)
+            Text(
+              openingHoursLocal,
+              style: DetailPageStyles.content,
+            ),
           SizedBox(height: 25),
           Row(
             children: [

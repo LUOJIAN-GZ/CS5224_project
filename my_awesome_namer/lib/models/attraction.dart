@@ -4,7 +4,18 @@ List<Attraction> attractionFromJson(List<dynamic> str) =>
     List<Attraction>.from(str.map((x) => Attraction.fromJson(x)));
 
 class Attraction {
-  Attraction(this.id);
+  Attraction(
+      {required this.id,
+      required this.name,
+      required this.imagePath,
+      required this.metaDescr,
+      this.address,
+      this.latitude,
+      this.longitude,
+      this.rating,
+      this.openingHours,
+      this.influenceScore,
+      this.twitterURL});
 
   Attraction.blank()
       : id = 0,
@@ -38,7 +49,7 @@ class Attraction {
   Attraction.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         name = json['name'],
-        imagePath = json['image_path'],
+        imagePath = "https://${json['image_path']}",
         metaDescr = json['meta_descr'],
         address = json.containsKey("address") ? json['address'] : null,
         // json['address'] in json.keys,
@@ -56,15 +67,15 @@ class Attraction {
             ? twitterFromJson(json['twitter_posts'])
             : null;
 
-  int id;
-  late String name;
-  late String imagePath;
-  late String metaDescr;
-  late String address;
-  late double latitude;
-  late double longitude;
-  late double rating; //Google ratings
-  late String openingHours;
-  late double influenceScore;
-  late List<TwitterURL>? twitterURL;
+  final int id;
+  final String name;
+  final String imagePath;
+  final String metaDescr;
+  final String? address;
+  final double? latitude;
+  final double? longitude;
+  final double? rating; //Google ratings
+  final String? openingHours;
+  final double? influenceScore;
+  final List<TwitterURL>? twitterURL;
 }
