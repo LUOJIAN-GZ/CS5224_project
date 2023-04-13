@@ -200,9 +200,11 @@ https://iu9iodz8n1.execute-api.ap-southeast-1.amazonaws.com/cs5224_apis/attracti
 
 # Front-end Architecture
 **Create SSL/TLS Certificate**
+
 First, let’s create an SSL/TLS certificate using AWS Certificate Manager.   We’re going to use sgfavour.example.com as the Common Name for our certificate.
 
 *AWS Management Console*
+
  - Go to https://console.aws.amazon.com/acm/ and follow the steps below.
  - Click the Request a Certificate button
  - Select Request a public certificate and click Next
@@ -211,6 +213,7 @@ First, let’s create an SSL/TLS certificate using AWS Certificate Manager.   We
  - Click the Request button
 
 AWS CLI
+
 ```
 aws acm request-certificate \
       --domain-name api.example.com \
@@ -221,6 +224,7 @@ Let’s create a target group. A target group is a logical grouping of EC2 insta
 We’ll create a target group named app-target-group configured for HTTP traffic on port 80 with a health check at /.   And then we will register our EC2 instance into the target group.
 
 *AWS Management Console*
+
  - Go to https://console.aws.amazon.com/ec2/ and follow the steps below.
  - Click Target Groups on the left menu 
  - Click Create target group
@@ -234,6 +238,7 @@ We’ll create a target group named app-target-group configured for HTTP traffic
  - Click the Create Target Group button
 
 *AWS CLI*
+
 The first command creates the target group.  Replace VPC_ID below with your VPC ID.  Copy the target group ARN from the output to use in the next command.
 ```
 aws elbv2 create-target-group \
@@ -254,6 +259,7 @@ aws elbv2 register-targets \
 Next, we’ll create the application load balancer that will accept HTTPS traffic on port 443 and forward the requests to our application on port 80.
 
 *AWS Management Console*
+
  - Go to https://console.aws.amazon.com/ec2/ and follow the steps below.
  - Click Load Balancers on the left menu 
  - Click Create Load Balancer button
