@@ -217,7 +217,7 @@ AWS CLI
 
 ```
 aws acm request-certificate \
-      --domain-name api.example.com \
+      --domain-name sgfavour.example.com \
       --validation-method DNS
 ```
 
