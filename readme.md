@@ -11,7 +11,7 @@
 5. Leave other things as default,and click ”Create VPC“
 
 the Resource Map of the VPC should be like this:
-![loading-ag-564](file:///C:/Users/17784/Documents/GitHub/CS5224_frondend/pictures/vpc-preview.png)
+![loading-ag-387](./pictures/vpc-preview.png)
 
 
 
@@ -31,13 +31,13 @@ You need to create 5 lambda functions using code from the three python files in 
 
 For each Lambda function, add a layer AWSSDKPands:
 
-![30b826a8-07bc-4c0a-8c1b-6bedcbd66032](file:///C:/Users/17784/Documents/GitHub/CS5224_frondend/pictures/lambda_add_layer.png)
+![loading-ag-389](./pictures/lambda_add_layer.png)
 
 
 
 For each Lambda functions, configure its VPC to the VPC you just created,  and choose two private subnets in two different AZs. Configure the Security Group to allow all inbound requests and outbound requests(inboound request limit policy will be configured in API gateway). As the picture below shows:
 
-![969417b3-3549-4af2-af94-08cca0677b55](file:///C:/Users/17784/Documents/GitHub/CS5224_frondend/pictures/lambda_set_vpc.png) 
+![loading-ag-391](./pictures/lambda_set_vpc.png) 
 
 
 
@@ -45,7 +45,7 @@ For each Lambda functions, configure its VPC to the VPC you just created,  and c
 
 Add a EventBridge trigger for Lambda function "cs5224v2_rating_cronjob" . So that it runs once a day. Configure it as the picture below shows:
 
-![loading-ag-1447](file:///C:/Users/17784/Documents/GitHub/CS5224_frondend/pictures/lambda_set_trigger.png)
+![loading-ag-393](./pictures/lambda_set_trigger.png)
 
 cron(0 2 * * ? *) means it runs at 2:00 am each day.
 
@@ -101,7 +101,7 @@ In API Gateway, create REST API named "Attraction API"by importing this swagger 
 
 
 
-![loading-ag-1449](file:///C:/Users/17784/Documents/GitHub/CS5224_frondend/pictures/apigateway.png)
+![loading-ag-395](./pictures/apigateway.png)
 
 
 
@@ -109,17 +109,17 @@ Connect /attractions GET method to Lambda function "cs5224_atttractions_get".
 
 In "Integration Request". Add mapping template as the picture shows:
 
-![loading-ag-1451](file:///C:/Users/17784/Documents/GitHub/CS5224_frondend/pictures/apigateway_template.png)
+![loading-ag-397](./pictures/apigateway_template.png)
 
 
 
 Connect /attractions/id GET method to Lambda function "cs5224_attractions_id". And add Mapping Template in "Integration Request" as the picture shows:
 
-![loading-ag-1453](file:///C:/Users/17784/Documents/GitHub/CS5224_frondend/pictures/apigateway_template2.png)
+![loading-ag-399](./pictures/apigateway_template2.png)
 
 Connect /attractions/search GET method to Lambda function "cs5224_attractions_search". And add Mapping Template in "Integration Request" as the picture shows:
 
-![loading-ag-1455](file:///C:/Users/17784/Documents/GitHub/CS5224_frondend/pictures/apigateway_template3.png)
+![loading-ag-401](./pictures/apigateway_template3.png)
 
 
 
@@ -179,7 +179,7 @@ Test /attractions GET Method:
 
 https://iu9iodz8n1.execute-api.ap-southeast-1.amazonaws.com/cs5224_apis/attractions?latitude=1.2838785&longitude=103.85899&flag_location=1&distance=10&orderby=1
 
-![loading-ag-1457](file:///C:/Users/17784/Documents/GitHub/CS5224_frondend/pictures/api_test1.png)
+![loading-ag-403](./pictures/api_test1.png)
 
 
 
@@ -187,13 +187,13 @@ Test /attractions/id GET Method:
 
  https://iu9iodz8n1.execute-api.ap-southeast-1.amazonaws.com/cs5224_apis/attractions/id?id=100
 
-![loading-ag-1459](file:///C:/Users/17784/Documents/GitHub/CS5224_frondend/pictures/api_test2.png)
+![loading-ag-405](./pictures/api_test2.png)
 
 Test /attractions/search Get method:
 
 https://iu9iodz8n1.execute-api.ap-southeast-1.amazonaws.com/cs5224_apis/attractions/search?keyword=Heritage Centre, Singapore
 
-![b780e2f0-8b80-4729-bd9d-8ef43959ff95](file:///C:/Users/17784/Pictures/Typedown/b780e2f0-8b80-4729-bd9d-8ef43959ff95.png)
+![b780e2f0-8b80-4729-bd9d-8ef43959ff95](./pictures/api_test3.png)
 
 # 
 
@@ -310,3 +310,5 @@ If the EC2 instance and load balancer are both assigned to the default security 
 There are many other ways to configure security groups.   You can refer to the AWS documentation [here](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html).
 
 # 
+
+
