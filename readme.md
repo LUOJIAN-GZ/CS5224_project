@@ -199,6 +199,7 @@ https://iu9iodz8n1.execute-api.ap-southeast-1.amazonaws.com/cs5224_apis/attracti
 
 
 # Front-end Architecture
+
 **Create SSL/TLS Certificate**
 
 First, let’s create an SSL/TLS certificate using AWS Certificate Manager.   We’re going to use sgfavour.example.com as the Common Name for our certificate.
@@ -219,7 +220,9 @@ aws acm request-certificate \
       --domain-name api.example.com \
       --validation-method DNS
 ```
+
 **Create EC2 Target Group**
+
 Let’s create a target group. A target group is a logical grouping of EC2 instances that can receive traffic from a load balancer.
 We’ll create a target group named app-target-group configured for HTTP traffic on port 80 with a health check at /.   And then we will register our EC2 instance into the target group.
 
@@ -256,6 +259,7 @@ aws elbv2 register-targets \
 ```
 
 **Create Application Load Balancer**
+
 Next, we’ll create the application load balancer that will accept HTTPS traffic on port 443 and forward the requests to our application on port 80.
 
 *AWS Management Console*
