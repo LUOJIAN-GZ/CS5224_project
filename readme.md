@@ -9,11 +9,11 @@
 4. Set ”NAT gateways“ as "In 1 AZ". And set "VPC endpoints" to "S3 Gateway"
 
 5. Leave other things as default,and click ”Create VPC“
-
+ 
 the Resource Map of the VPC should be like this:
 ![loading-ag-387](./pictures/vpc-preview.png)
 
-
+ 
 
 # S3 bucket
 
@@ -308,6 +308,7 @@ Our security group configuration must adhere to two rules in order for us to get
 
 If the EC2 instance and load balancer are both assigned to the default security group, then the first rule is taken care of.   The second rule is handled in step 9 of Create Application Load Balancer step.
 There are many other ways to configure security groups.   You can refer to the AWS documentation [here](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html).
+
 
 # 
 
