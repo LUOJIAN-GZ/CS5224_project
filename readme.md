@@ -332,5 +332,45 @@ For example:
 scp -i D:\pe\CS5224_LAB02.pem -r E:\flutterproject\project_20230328\CS5224_frondend\my_awesome_namer\build\web ubuntu@44.193.24.215:/home/ubuntu/web
 ```
 
+**Deploy it in nginx**
+```
+sudo apt update
+sudo apt install nginx
+```
+**Configure Nginx**
+ - Let’s say your application name is todos so a good folder naming convention would be /var/www/html/todos. Inside the todos directory is the build files, index.html, etc. If you’re not familiar with Linux commands this should help, assuming that your build files are in your home directory.
+ - 
+```
+sudo mv web /var/www/html/todos
+```
+ - Next, you need to go to the Nginx directory on your server more precisely /etc/nginx/sites-enabled. There should be a file named default. Open it using a vim/nano text editor of your choice and change the root directory on the configuration file to /var/www/html/todos.
+
+```
+# Default server configuration
+server {
+       listen 80 default_server;
+       listen [::]:80 default_server;
+
+       root /var/www/html/todos;
+       index index.html index.htm;
+
+       server_name _;
+
+       location / {
+              try_files $uri $uri/ =404;
+       }
+}
+```
+Here is an example. The original file should be filled with comments, but I left those comments out in the gist. After changing your config files, check your Nginx config using this command:
+```
+sudo nginx -t
+```
+ - If all is well, then restart the Nginx service:
+
+```
+sudo systemctl reload nginx
+```
+This should restart your Nginx server and get the updated config file. When all is done open up your VPS IP Address from the browser. Your Flutter app should already be up.
+
 #
 
