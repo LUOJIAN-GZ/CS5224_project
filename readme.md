@@ -310,7 +310,13 @@ If the EC2 instance and load balancer are both assigned to the default security 
 There are many other ways to configure security groups.   You can refer to the AWS documentation [here](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html).
 
 
-# 
+## Twitter Data Processing
+
+We use AWS Lambda to process Twitter data for a list of attractions. The Lambda function retrieves tweets for each attraction, calculates the influence scores of tweets, and computes the trending score for each attraction. The processed data is then inserted into a MySQL database. To ensure our system handles the Twitter API rate limits, we have designed a distributed architecture with multiple Lambda functions working in parallel, scheduled at different time intervals using EventBridge (CloudWatch Events).
+
+To learn more about the Twitter data processing Lambda function, including setup and deployment instructions, visit the [Twitter Data Processing Lambda Function subdirectory](./twitter).
+
+
 
 # Front-end Deployment
 
