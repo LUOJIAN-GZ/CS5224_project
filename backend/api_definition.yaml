@@ -1,0 +1,126 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Attraction API"
+paths:
+  /attractions:
+    get:
+      summary: "Get attraction list by user location & filter"
+      description: "Returns a list of attractions based on user location and filter criteria."
+      parameters:
+        - name: "latitude"
+          in: "query"
+          description: "Latitude of user location"
+          type: "number"
+          required: false
+        - name: "longitude"
+          in: "query"
+          description: "Longitude of user location"
+          type: "number"
+          required: false
+        - name: "flag_location"
+          in: "query"
+          description: "Flag to indicate if user provided location or not (0 or 1)"
+          type: "boolean"
+          required: true
+        - name: "distance"
+          in: "query"
+          description: "Filter distance (1, 3, 5, or 10 km)"
+          type: "integer"
+          required: false
+        - name: "orderby"
+          in: "query"
+          description: "Sort order (0 for Twitter score, 1 for Google reviews)"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                id:
+                  type: "integer"
+                name:
+                  type: "string"
+                image_path:
+                  type: "string"
+                meta_descr:
+                  type: "integer"
+                influence_score:
+                  type: "number"
+                rating:
+                  type: "number"
+  /attractions/id:
+    get:
+      summary: "Get attraction detail by attraction id"
+      description: "Returns details about a single attraction based on its id."
+      parameters:
+        - name: "id"
+          in: "query"
+          description: "Id of the attraction"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+              name:
+                type: "string"
+              address:
+                type: "string"
+              latitude:
+                type: "number"
+              longitude:
+                type: "number"
+              rating:
+                type: "number"
+              image_path:
+                type: "string"
+              meta_descr:
+                type: "integer"
+              opening_hours:
+                type: "string"
+              influence_score:
+                type: "number"
+              twitter_posts:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    text:
+                      type: "string"
+                    url:
+                      type: "string"
+  /attractions/search:
+    get:
+      summary: "Search attraction"
+      description: "Returns a list of attractions related to the specified keyword."
+      parameters:
+        - name: "keyword"
+          in: "query"
+          description: "Search keyword"
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties:
+                id:
+                  type: "integer"
+                name:
+                  type: "string"
+                image_path:
+                  type: "string"
+                meta_descr:
+                  type: "integer"
