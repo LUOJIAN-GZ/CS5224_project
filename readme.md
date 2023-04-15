@@ -327,7 +327,9 @@ To learn more about the Twitter data processing Lambda function, including setup
  ```
  flutter build web
  ```
- 
+
+ For this project, you could directly use the folder in CS5224_project/my_awesome_namer/build/web.
+
  - run the following code to sent the local files to EC2 machine:
  ```
 scp -i path/to/public_key -r path/build/web username@ip:/directory/in/EC2/machine
@@ -377,6 +379,16 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 This should restart your Nginx server and get the updated config file. When all is done open up your VPS IP Address from the browser. Your Flutter app should already be up.
+
+*Testing*
+If you just want to test the front-end code,  go to the CS5224_project/my_awesome_namer/build/web and under this folder, type:
+```
+sudo python3 -m http.server 8000
+```
+It could start like the picture below.
+![loading-ag-500](./pictures/frondend1.png)
+![loading-ag-501](./pictures/frondend2.png)
+![loading-ag-502](./pictures/frondend3.png)
 
 #
 
