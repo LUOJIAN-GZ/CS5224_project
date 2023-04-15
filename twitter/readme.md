@@ -10,12 +10,12 @@ This Lambda function processes Twitter data for a list of attractions, calculate
 
 ## Setup
 
-1. Clone the repository or download the `lambda_function.py` file.
+1. Clone the repository.
 
 2. Install the required Python packages:
 
    ```bash
-   pip install -r requirements.txt
+   pip install -r twitter/requirements.txt
    ```
    
 
