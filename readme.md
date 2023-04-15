@@ -380,7 +380,7 @@ sudo systemctl reload nginx
 ```
 This should restart your Nginx server and get the updated config file. When all is done open up your VPS IP Address from the browser. Your Flutter app should already be up.
 
-*Testing*
+**Testing**
 If you just want to test the front-end code,  go to the CS5224_project/my_awesome_namer/build/web and under this folder, type:
 ```
 sudo python3 -m http.server 8000
