@@ -36,7 +36,7 @@ This Lambda function processes Twitter data for a list of attractions, calculate
 
     To deploy the Lambda function, you need to create a zip file containing the lambda_function.py script and all the required packages. Run the following command in your terminal:
     ```
-    pip install -r requirements.txt -t twitter/
+    pip install -r twitter/requirements.txt -t twitter/
     cd twitter
     zip -r lambda_function.zip .
     ```
