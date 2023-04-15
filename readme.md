@@ -312,4 +312,25 @@ There are many other ways to configure security groups.   You can refer to the A
 
 # 
 
+# Front-end Deployment
+
+**Building in EC2**
+
+ - Test it in local machine, make sure everything works fine.
+ - run the following code to buid flutter app, get the files locally:
+ ```
+ flutter build web
+ ```
+ 
+ - run the following code to sent the local files to EC2 machine:
+ ```
+scp -i path/to/public_key -r path/build/web username@ip:/directory/in/EC2/machine
+```
+For example:
+
+```
+scp -i D:\pe\CS5224_LAB02.pem -r E:\flutterproject\project_20230328\CS5224_frondend\my_awesome_namer\build\web ubuntu@44.193.24.215:/home/ubuntu/web
+```
+
+#
 
