@@ -5,7 +5,7 @@ This Lambda function processes Twitter data for a list of attractions, calculate
 ## Prerequisites
 
 - Python 3.8 or higher
-- AWS account with Lambda service and MySQL RDS instance
+- AWS account with Lambda service and MySQL RDS instance, NAT enabled to access internet
 - Twitter Developer account with API credentials
 
 ## Setup
