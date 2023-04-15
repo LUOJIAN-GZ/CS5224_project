@@ -41,8 +41,18 @@ This Lambda function processes Twitter data for a list of attractions, calculate
     zip -r lambda_function.zip .
     ```
     Now you can upload the lambda_function.zip file to your Lambda function in the AWS console.
-    
-    Configure an EventBridge (CloudWatch Events) trigger for the Lambda function to schedule the execution.
+
+5. After deploying the Lambda function, you can test it directly in the AWS Lambda console by creating a test event with any JSON data, for example:
+   ```
+   {
+     "key1": "value1",
+     "key2": "value2",
+     "key3": "value3"
+   }
+   ```
+   Click the "Test" button to run the function. You can then verify the function's output in the AWS CloudWatch logs. Make sure that the function runs successfully and prints the expected output in the logs.
+
+6. Configure an EventBridge (CloudWatch Events) trigger for the Lambda function to schedule the execution.
 
 ## Usage
 The Lambda function will be triggered automatically based on the configured EventBridge schedule. The processed Twitter data will be inserted into the specified MySQL table.
